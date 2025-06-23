@@ -26,7 +26,7 @@ is_ko = st.session_state.lang == "ko"
 T = {
     "title": "📘 논문 제목 생성기" if is_ko else "📘 Academic Title Generator",
     "api_key": "Gemini API 키 입력" if is_ko else "Enter Gemini API Key",
-    "api_help_text": "[API 키 발급 링크](https://makersuite.google.com/app/apikey)" if is_ko
+    "api_help": "[API 키 발급 링크](https://makersuite.google.com/app/apikey)" if is_ko
                  else "[Get Your Gemini API Key](https://makersuite.google.com/app/apikey)",
     "model": "Gemini 모델 선택" if is_ko else "Select Gemini Model",
     "abs_lang": "초록 언어" if is_ko else "Abstract Language",
