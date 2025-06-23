@@ -22,35 +22,37 @@ with top2:
     st.session_state["lang"] = "ko" if "🇰🇷" in lang_flag else "en"
 is_ko = st.session_state.lang == "ko"
 
-# 텍스트 다국어 대응
+# 다국어 텍스트 딕셔너리
 T = {
     "title": "📘 논문 제목 생성기" if is_ko else "📘 Academic Title Generator",
     "api_key": "Gemini API 키 입력" if is_ko else "Enter Gemini API Key",
     "api_help": "[API 키 발급 링크](https://makersuite.google.com/app/apikey)",
-    "model": "Gemini 모델 선택",
+    "model": "Gemini 모델 선택" if is_ko else "Select Gemini Model",
     "abs_lang": "초록 언어" if is_ko else "Abstract Language",
     "title_lang": "제목 생성 언어" if is_ko else "Title Output Language",
-    "rules": "1️⃣ 제목 생성 규칙",
-    "word_limit": "최대 단어 수",
-    "style": "제목 스타일",
-    "guide": "제목 가이드라인",
-    "examples": "2️⃣ 예제 입력",
-    "num_examples": "예제 개수",
-    "new_input": "3️⃣ 새 초록 및 키워드 입력",
-    "abstract": "초록",
-    "keywords": "키워드 (쉼표로 구분)",
-    "title_input": "제목",
-    "generate": "🚀 제목 생성 (최대 20개)",
-    "select_titles": "✅ 생성된 제목 중 선택",
-    "combine_titles": "🔁 선택한 제목들 조합하여 5개 추천",
-    "result": "🎯 최종 추천 제목",
-    "download": "📥 다운로드 (.txt)",
-    "warning": "⚠️왼쪽 입력창에Gemini API 키를 입력해주세요." if is_ko else "Please enter your Gemini API key in the left sidebar."
+    "rules": "1️⃣ 제목 생성 규칙" if is_ko else "1️⃣ Title Generation Rules",
+    "word_limit": "최대 단어 수" if is_ko else "Max Word Count",
+    "style": "제목 스타일" if is_ko else "Title Style",
+    "guide": "제목 가이드라인" if is_ko else "Title Guideline",
+    "examples": "2️⃣ 예제 입력" if is_ko else "2️⃣ Example Inputs",
+    "num_examples": "예제 개수" if is_ko else "Number of Examples",
+    "new_input": "3️⃣ 새 초록 및 키워드 입력" if is_ko else "3️⃣ New Abstract and Keywords",
+    "abstract": "초록" if is_ko else "Abstract",
+    "keywords": "키워드 (쉼표로 구분)" if is_ko else "Keywords (comma-separated)",
+    "title_input": "제목" if is_ko else "Title",
+    "generate": "🚀 제목 생성 (최대 20개)" if is_ko else "🚀 Generate Titles (Up to 20)",
+    "select_titles": "✅ 생성된 제목 중 선택" if is_ko else "✅ Select Your Favorite Titles",
+    "combine_titles": "🔁 선택한 제목들 조합하여 5개 추천" if is_ko else "🔁 Combine Selected Titles into 5 Suggestions",
+    "result": "🎯 최종 추천 제목" if is_ko else "🎯 Final Recommended Titles",
+    "download": "📥 다운로드 (.txt)" if is_ko else "📥 Download (.txt)",
+    "warning": "⚠️왼쪽 입력창에Gemini API 키를 입력해주세요." if is_ko else "⚠️ Please enter your Gemini API key in the sidebar.",
+    "sidebar_header": "⚙️ 설정" if is_ko else "⚙️ Settings",
 }
+
 style_opts = ["학술적", "간결한", "창의적인"] if is_ko else ["Academic", "Concise", "Creative"]
 
-# 사이드바 구성
-st.sidebar.header("⚙️ 설정")
+# 사이드바
+st.sidebar.header(T["sidebar_header"])
 model_id = st.sidebar.selectbox(T["model"], [
     "gemini-2.5-pro-preview-06-05",
     "gemini-2.5-flash-preview-05-20",
@@ -65,7 +67,7 @@ if not st.session_state.api_key:
     st.stop()
 genai.configure(api_key=st.session_state.api_key)
 
-# 페이지 제목
+# 타이틀
 st.markdown(f"<h1 style='font-size:38px; text-align:center; margin-bottom:20px;'>{T['title']}</h1>", unsafe_allow_html=True)
 
 # 1️⃣ 제목 생성 규칙
@@ -94,7 +96,7 @@ st.markdown(f"<h3 style='font-size:26px; margin-top:30px;'>{T['new_input']}</h3>
 new_abs = st.text_area(T["abstract"], height=180)
 new_kw = st.text_input(T["keywords"])
 
-# 🚀 제목 생성 버튼
+# 🚀 제목 생성
 if st.button(T["generate"]):
     prompt = (
         f"You are a professional academic paper title assistant.\n"
@@ -122,7 +124,6 @@ if st.button(T["generate"]):
 if st.session_state.generated_titles:
     st.markdown(f"### {T['select_titles']}")
     selected = []
-
     for i, title in enumerate(st.session_state.generated_titles):
         key = f"title_chk_{i}"
         col1, col2 = st.columns([0.9, 0.1])
@@ -132,8 +133,8 @@ if st.session_state.generated_titles:
             checked = st.checkbox("✔", value=st.session_state.get(key, False), key=key)
             if checked:
                 selected.append(title)
-
     st.session_state.selected_titles = selected
+
 
 
 # 🔁 선택된 제목 조합 요청
