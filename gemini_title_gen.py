@@ -26,7 +26,8 @@ is_ko = st.session_state.lang == "ko"
 T = {
     "title": "📘 논문 제목 생성기" if is_ko else "📘 Academic Title Generator",
     "api_key": "Gemini API 키 입력" if is_ko else "Enter Gemini API Key",
-    "api_help": "[API 키 발급 링크](https://makersuite.google.com/app/apikey)",
+    "api_help_text": "[API 키 발급 링크](https://makersuite.google.com/app/apikey)" if is_ko
+                 else "[Get Your Gemini API Key](https://makersuite.google.com/app/apikey)",
     "model": "Gemini 모델 선택" if is_ko else "Select Gemini Model",
     "abs_lang": "초록 언어" if is_ko else "Abstract Language",
     "title_lang": "제목 생성 언어" if is_ko else "Title Output Language",
@@ -36,6 +37,7 @@ T = {
     "guide": "제목 가이드라인" if is_ko else "Title Guideline",
     "examples": "2️⃣ 예제 입력" if is_ko else "2️⃣ Example Inputs",
     "num_examples": "예제 개수" if is_ko else "Number of Examples",
+    "example_label": "예제" if is_ko else "Example",
     "new_input": "3️⃣ 새 초록 및 키워드 입력" if is_ko else "3️⃣ New Abstract and Keywords",
     "abstract": "초록" if is_ko else "Abstract",
     "keywords": "키워드 (쉼표로 구분)" if is_ko else "Keywords (comma-separated)",
@@ -84,7 +86,7 @@ st.markdown(f"<h3 style='font-size:26px; margin-top:30px;'>{T['examples']}</h3>"
 num_examples = st.number_input(T["num_examples"], min_value=1, max_value=10, value=3)
 examples = []
 for i in range(int(num_examples)):
-    with st.expander(f"📄 예제 {i+1}"):
+    with st.expander(f"📄 {T['example_label']} {i+1}"):
         t = st.text_input(f"{T['title_input']}", key=f"t_{i}")
         a = st.text_area(f"{T['abstract']}", key=f"a_{i}", height=120)
         k = st.text_input(f"{T['keywords']}", key=f"k_{i}")
